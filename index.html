@@ -6,7 +6,7 @@
 	</script>
 	<style type="text/css">
 		body{
-			background: #eee;
+			background: #000;
 		}
 		#calendar-backing{
 			fill:#fff;
@@ -78,83 +78,86 @@
     <text id="mon-5" x="406.355" y="150.602">00</text>
 </g>
 <text id="month" x="28.415" y="77.362" font-family="'HelveticaNeue-Bold','Helvetica Neue'" font-weight="700" font-size="20">Month</text>
-<text id="year" x="147.863" y="77.362" font-family="'HelveticaNeue-Bold','Helvetica Neue'" font-weight="700" font-size="20">0000</text></svg>
+<text id="year" x="147.863" y="77.362" font-family="'HelveticaNeue-Bold','Helvetica Neue'" font-weight="700" font-size="20">0000</text>
+<text id="credit" font-family="'HelveticaNeue-Bold','Helvetica Neue'" transform="translate(390,842)" fill="rgba(0,0,0,0.4)" font-size="8">Tom Pearson - toffeemilkshake.co.uk/helvetica-calendar</text>
+</svg>
 
 <input type="date" id="date-select">
 </body>
 <script>
-
-
-	const date = new Date();
-	const month = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  
-	const thisMonth = date.getMonth();
+function draw(date){
+  const month = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  const thisMonth = date.getMonth();
   const thisYear = date.getFullYear();
   const thisDate = date.getDate();
-
-	const pad = (d)=>{
-		const digits = String(d).split('');
-		if(digits.length == 1){ digits.unshift(0) }
-		return digits.join('');
-	}
-
-  const todayLabel = 'mon-1'
-	const monthDays = ((month, year) => {
-			const date = new Date(year, month, 1);
-			const days = [];
-			while (date.getMonth() === month) {
-				days.push(new Date(date));
-				date.setDate(date.getDate() + 1);
-			}
-			return days;
-		})(thisMonth, thisYear)
-		.reduce((acc, current, i)=>{
+  const monthDays = ((month, year) => {
+      const date = new Date(year, month, 1);
+      const days = [];
+      while (date.getMonth() === month) {
+        days.push(new Date(date));
+        date.setDate(date.getDate() + 1);
+      }
+      return days;
+    })(thisMonth, thisYear)
+    .reduce((acc, current, i)=>{
       const weekday = ['sun','mon','tue','wed','thu','fri','sat'][current.getDay()];
-			if(i!=0 && weekday == 'mon'){
-				acc.week ++;
-			}
-			console.log(weekday);
-			acc.list.push({
-				id:`${weekday}-${acc.week}`,
+      if(i!=0 && weekday == 'mon'){
+        acc.week ++;
+      }
+      console.log(weekday);
+      acc.list.push({
+        id:`${weekday}-${acc.week}`,
         date: current.getDate(),
         today: (current.getDate() == thisDate),
         row: (acc.row)%14
       });
       acc.row = acc.row+1;
-			return acc;
-		},{
+      return acc;
+    },{
       week: 1,
       row: 0,
-			list: []
-		}).list;
+      list: []
+    }).list;
 
-	console.log(monthDays);
+    console.log(monthDays);
 
-	d3.select('text#month')
-		.text(['January','February','March','April','May','June','July','August','September','October','November','December'][thisMonth]);
+  d3.select('text#month')
+    .text(['January','February','March','April','May','June','July','August','September','October','November','December'][thisMonth]);
+  
+  d3.select('text#year')
+    .text(String(date.getFullYear()));
+
+  d3.selectAll('#dates text').attr('fill','none');
+  let todayRowLabel = ''; 
+  monthDays.forEach((d)=>{
+    console.log(d.today, d);
+    d3.select(`text#${d.id}`)
+      .text(pad(d.date))
+      .attr('fill', ()=>d.today?'red':'black'); 
+
+    d3.select(`text#day-row${d.row+1}`)
+      .attr('fill','black');
+  });
+}
+
+
+const pad = (d)=>{
+  const digits = String(d).split('');
+  if(digits.length == 1){ digits.unshift(0) }
+  return digits.join('');
+}
+
+draw(new Date());
+
+d3.select('#date-select')
+  .on('change', function(e){
+    console.log(`change`,this.value);
+    draw(new Date(this.value));
+  })
+
+  
+
 	
-	d3.select('text#year')
-		.text(String(date.getFullYear()));
-
-	d3.select('#dates').attr('fill','none');
-
-	monthDays.forEach((d)=>{
-    console.log(d)
-    
-		d3.select(`text#${d.id}`)
-			.text(pad(d.date))
-      .attr('fill','#000');
-
-    if(d.today){
-      d3.select(`text#${d.id}`)
-        .attr('fill', 'red');
-      
-      d3.select(`text#day-row${d.row+1}`)
-        .attr('fill', 'red');
-        
-    }
-    
-	})
 
 </script>
 </html>
