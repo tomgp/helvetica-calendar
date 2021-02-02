@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>calendar</title>
+	<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/d3/4.13.0/d3.min.js">
+	</script>
+	<style type="text/css">
+		body{
+			background: #eee;
+		}
+		#calendar-backing{
+			fill:#fff;
+		}
+	</style>
+</head>
+<body>
+
+<svg viewBox="0 0 596 842" xmlns="http://www.w3.org/2000/svg" fill-rule="evenodd" clip-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="1.414">
+	<rect x="0" y="0" width="596" height="842" id="calendar-backing"></rect>
+	<g id="day-labels" font-family="'HelveticaNeue-Bold','Helvetica Neue'" font-weight="700" font-size="8">
+    <text x="31.855" y="135.03" id="day-row1">MON</text>
+    <text x="32.791" y="168.571" id="day-row2">TUE</text>
+    <text x="32.671" y="202.112" id="day-row3">WED</text>
+    <text x="32.791" y="235.526" id="day-row4">THU</text>
+    <text x="31.879" y="269.067" id="day-row5">FRI</text>
+    <text x="32.371" y="333.874" id="day-row6">SAT</text>
+    <text x="32.371" y="369.143" id="day-row7">SUN</text>
+    <text x="31.855" y="434.695" id="day-row8">MON</text>
+    <text x="32.791" y="468.236" id="day-row9">TUE</text>
+    <text x="32.671" y="501.778" id="day-row10">WED</text>
+    <text x="32.791" y="535.191" id="day-row11">THU</text>
+    <text x="31.879" y="568.733" id="day-row12">FRI</text>
+    <text x="32.371" y="633.539" id="day-row13">SAT</text>
+    <text x="32.371" y="668.809" id="day-row14">SUN</text>
+  </g>
+  <g id="dates" font-family="'HelveticaNeue-Bold','Helvetica Neue'" font-weight="700" font-size="33">
+    <text id="sun-2" x="117.845" y="684.381">00</text>
+    <text id="sat-2" x="117.845" y="649.111">00</text>
+    <text id="fri-2" x="117.845" y="584.441">00</text>
+    <text id="thu-2" x="117.845" y="550.898">00</text>
+    <text id="wed-2" x="117.845" y="517.354">00</text>
+    <text id="tue-2" x="117.845" y="483.811">00</text>
+    <text id="mon-2" x="117.845" y="450.267">00</text>
+    <text id="sun-1" x="117.845" y="384.715">00</text>
+    <text id="sat-1" x="117.845" y="349.446">00</text>
+    <text id="fri-1" x="117.845" y="284.775">00</text>
+    <text id="thu-1" x="117.845" y="251.232">00</text>
+    <text id="wed-1" x="117.845" y="217.688">00</text>
+    <text id="tue-1" x="117.845" y="184.145">00</text>
+    <text id="mon-1" x="117.845" y="150.602">00</text>
+    <text id="sun-4" x="262.1" y="684.381">00</text>
+    <text id="sat-4" x="262.1" y="649.111">00</text>
+    <text id="fri-4" x="262.1" y="584.441">00</text>
+    <text id="thu-4" x="262.1" y="550.898">00</text>
+    <text id="wed-4" x="262.1" y="517.354">00</text>
+    <text id="tue-4" x="262.1" y="483.811">00</text>
+    <text id="mon-4" x="262.1" y="450.267">00</text>
+    <text id="sun-3" x="262.1" y="384.715">00</text>
+    <text id="sat-3" x="262.1" y="349.446">00</text>
+    <text id="fri-3" x="262.1" y="284.775">00</text>
+    <text id="thu-3" x="262.1" y="251.232">00</text>
+    <text id="wed-3" x="262.1" y="217.688">00</text>
+    <text id="tue-3" x="262.1" y="184.145">00</text>
+    <text id="mon-3" x="262.1" y="150.602">00</text>
+    <text id="sun-6" x="406.355" y="684.381">00</text>
+    <text id="sat-6" x="406.355" y="649.111">00</text>
+    <text id="fri-6" x="406.355" y="584.441">00</text>
+    <text id="thu-6" x="406.355" y="550.898">00</text>
+    <text id="wed-6" x="406.355" y="517.354">00</text>
+    <text id="tue-6" x="406.355" y="483.811">00</text>
+    <text id="mon-6" x="406.355" y="450.267">00</text>
+    <text id="sun-5" x="406.355" y="384.715">00</text>
+    <text id="sat-5" x="406.355" y="349.446">00</text>
+    <text id="fri-5" x="406.355" y="284.775">00</text>
+    <text id="thu-5" x="406.355" y="251.232">00</text>
+    <text id="wed-5" x="406.355" y="217.688">00</text>
+    <text id="tue-5" x="406.355" y="184.145">00</text>
+    <text id="mon-5" x="406.355" y="150.602">00</text>
+</g>
+<text id="month" x="28.415" y="77.362" font-family="'HelveticaNeue-Bold','Helvetica Neue'" font-weight="700" font-size="20">Month</text>
+<text id="year" x="147.863" y="77.362" font-family="'HelveticaNeue-Bold','Helvetica Neue'" font-weight="700" font-size="20">0000</text></svg>
+
+<input type="date" id="date-select">
+</body>
+<script>
+
+
+	const date = new Date();
+	const month = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  
+	const thisMonth = date.getMonth();
+  const thisYear = date.getFullYear();
+  const thisDate = date.getDate();
+
+	const pad = (d)=>{
+		const digits = String(d).split('');
+		if(digits.length == 1){ digits.unshift(0) }
+		return digits.join('');
+	}
+
+  const todayLabel = 'mon-1'
+	const monthDays = ((month, year) => {
+			const date = new Date(year, month, 1);
+			const days = [];
+			while (date.getMonth() === month) {
+				days.push(new Date(date));
+				date.setDate(date.getDate() + 1);
+			}
+			return days;
+		})(thisMonth, thisYear)
+		.reduce((acc, current, i)=>{
+      const weekday = ['sun','mon','tue','wed','thu','fri','sat'][current.getDay()];
+			if(i!=0 && weekday == 'mon'){
+				acc.week ++;
+			}
+			console.log(weekday);
+			acc.list.push({
+				id:`${weekday}-${acc.week}`,
+        date: current.getDate(),
+        today: (current.getDate() == thisDate),
+        row: (acc.row)%14
+      });
+      acc.row = acc.row+1;
+			return acc;
+		},{
+      week: 1,
+      row: 0,
+			list: []
+		}).list;
+
+	console.log(monthDays);
+
+	d3.select('text#month')
+		.text(['January','February','March','April','May','June','July','August','September','October','November','December'][thisMonth]);
+	
+	d3.select('text#year')
+		.text(String(date.getFullYear()));
+
+	d3.select('#dates').attr('fill','none');
+
+	monthDays.forEach((d)=>{
+    console.log(d)
+    
+		d3.select(`text#${d.id}`)
+			.text(pad(d.date))
+      .attr('fill','#000');
+
+    if(d.today){
+      d3.select(`text#${d.id}`)
+        .attr('fill', 'red');
+      
+      d3.select(`text#day-row${d.row+1}`)
+        .attr('fill', 'red');
+        
+    }
+    
+	})
+
+</script>
+</html>
